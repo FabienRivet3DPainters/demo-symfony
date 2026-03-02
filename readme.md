@@ -41,7 +41,7 @@ touch .env.test.local
 ```bash
 nano .env.local
 ```
-Colle le contenu suivant, puis sauvegarde avec `Ctrl+X` → `Y` → `Entrée` :
+Colle le contenu "database, puis sauvegarde avec `Ctrl+X` → `Y` → `Entrée` :
 ```dotenv
 DATABASE_URL=mysql://MYSQL_USER:MYSQL_PASSWORD@mysql:3306/MYSQL_DATABASE?serverVersion=8.0
 ```
