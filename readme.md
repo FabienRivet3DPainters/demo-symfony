@@ -28,6 +28,8 @@ git clone https://github.com/Mikadjx/demo-symfony.git
 cd demo-symfony
 ```
 
+> ℹ️ **Emplacement du projet** : le projet est cloné dans WSL2 (`~/demo-symfony`), pas dans un dossier Windows (`D:\`). C'est intentionnel pour des raisons de performance : les I/O fichiers sont jusqu'à 10x plus rapides dans WSL2 que depuis un dossier monté Windows.
+
 ### 2 — Créer les fichiers de configuration locaux
 ```bash
 touch .env.local
@@ -209,16 +211,13 @@ docker exec symfony php bin/console debug:router
 
 ---
 
-## Structure du projet
-
----
-
 ## Pipeline CI/CD
 Le pipeline GitHub Actions se déclenche à chaque `git push` sur `main` :
 1. Checkout du code
 2. Installation PHP 8.4
 3. Installation des dépendances Composer
-4. Build de l'image Docker
+4. Lancement des tests unitaires
+5. Build de l'image Docker
 
 ---
 
