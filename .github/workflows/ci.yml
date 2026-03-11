@@ -8,21 +8,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root123456
+          MYSQL_DATABASE: demo
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Installation PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
           extensions: pdo_mysql, intl, zip
 
-      - name: Installation des dépendances
+      - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - name: Lancer les tests unitaires
+      - name: Run unit tests
         run: php bin/phpunit tests/service/RecommendationServiceTest.php
 
-      - name: Build Docker
-        run: docker build -t demo-symfony .
+      - name: Run SonarQube scan
+        uses: sonarsource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=Demo-symfony
+            -Dsonar.sources=.
+            -Dsonar.host.url=http://localhost:9000
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}

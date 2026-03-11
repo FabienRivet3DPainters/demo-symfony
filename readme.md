@@ -102,10 +102,10 @@ code .
 ## URLs
 | Service | URL |
 |---|---|
-| Application Symfony | http://localhost:8080 |
-| API Produits | http://localhost:8080/api/products |
-| API Produit par ID | http://localhost:8080/api/products/{id} |
-| phpMyAdmin | http://localhost:8888 |
+| Application Symfony | https://localhost:8080 |
+| API Produits | https://localhost:8080/api/products |
+| API Produit par ID | https://localhost:8080/api/products/{id} |
+| phpMyAdmin | https://localhost:8888 |
 
 ---
 
