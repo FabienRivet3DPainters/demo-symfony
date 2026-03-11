@@ -7,12 +7,12 @@ services:
     container_name: symfony
     working_dir: /var/www/symfony
     environment:
-      - APP_ENV=dev
-      - APP_SECRET=34a1be6a7ab09cb639b66554513417e6
-      - DATABASE_URL=mysql://root:root123456@mysql:3306/demo?serverVersion=8.0
-      - JWT_SECRET_KEY=/var/www/symfony/config/jwt/private.pem
-      - JWT_PUBLIC_KEY=/var/www/symfony/config/jwt/public.pem
-      - JWT_PASSPHRASE=e1027461bd610a8b67427614e84301004838ad49c210766dfdcdac694c965b19
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+      - JWT_PASSPHRASE=${JWT_PASSPHRASE}
     volumes:
       - ./:/var/www/symfony:delegated
     restart: unless-stopped
@@ -27,9 +27,9 @@ services:
       - php
       - phpmyadmin
     ports:
-      - "8080:80"      # Symfony HTTP
-      - "8443:443"     # Symfony HTTPS
-      - "8444:8444"    # PhpMyAdmin HTTPS via Nginx
+      - "8080:80"
+      - "8443:443"
+      - "8444:8444"
     volumes:
       - ./:/var/www/symfony:ro,delegated
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -40,15 +40,17 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root123456
-      - MYSQL_DATABASE=demo
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
       - demo_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123456"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -60,8 +62,8 @@ services:
     environment:
       - PMA_HOST=mysql
       - PMA_PORT=3306
-      - PMA_USER=root
-      - PMA_PASSWORD=root123456
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
     depends_on:
       mysql:
         condition: service_healthy
