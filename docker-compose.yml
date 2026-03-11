@@ -17,8 +17,7 @@ services:
       - ./:/var/www/symfony:delegated
     restart: unless-stopped
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     networks:
       - proxy
 
@@ -74,8 +73,7 @@ services:
       - PMA_USER=${MYSQL_USER}
       - PMA_PASSWORD=${MYSQL_PASSWORD}
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -117,3 +115,4 @@ volumes:
 networks:
   proxy:
     external: true
+
