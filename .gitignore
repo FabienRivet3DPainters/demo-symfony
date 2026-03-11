@@ -23,3 +23,10 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+# Ignorer Docker Compose
+docker-compose.yml
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Ignorer les volumes temporaires
+**/volumes/
