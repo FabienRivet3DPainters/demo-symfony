@@ -38,6 +38,7 @@ services:
       - proxy
     volumes:
       - ./:/var/www/symfony:ro,delegated
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
     restart: unless-stopped
 
@@ -114,5 +115,6 @@ volumes:
 networks:
   proxy:
     external: true
+
 
 
