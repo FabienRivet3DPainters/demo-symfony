@@ -1,77 +1,63 @@
-version: "3.9"
+name: CI/CD Pipeline
 
-services:
-  php:
-    build:
-      context: .
-    working_dir: /var/www/symfony
-    environment:
-      APP_ENV: ${APP_ENV}
-      APP_SECRET: ${APP_SECRET}
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
-      JWT_PASSPHRASE: ${JWT_PASSPHRASE}
-    restart: unless-stopped
-    depends_on:
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  tests:
+    name: Tests & Quality
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: "mysql://demo_user:demo_password@127.0.0.1:3306/demo_test?serverVersion=8.0&charset=utf8mb4"
+
+    services:
       mysql:
-        condition: service_healthy
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: demo_test
+          MYSQL_USER: demo_user
+          MYSQL_PASSWORD: demo_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
 
-  nginx:
-    build:
-      context: .
-      dockerfile: nginx/Dockerfile
-    depends_on:
-      - php
-    ports:
-      - "80"
-    restart: unless-stopped
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    volumes:
-      - demo_data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_mysql, intl, zip, opcache
+          tools: composer:v2
 
-  phpmyadmin:
-    image: phpmyadmin
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_USER: ${MYSQL_USER}
-      PMA_PASSWORD: ${MYSQL_PASSWORD}
-    depends_on:
-      mysql:
-        condition: service_healthy
-    ports:
-      - "80"
-    restart: unless-stopped
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
 
-  sonarqube:
-    image: sonarqube:community
-    environment:
-      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_logs:/opt/sonarqube/logs
-      - sonarqube_extensions:/opt/sonarqube/extensions
-    ports:
-      - "9000"
-    restart: unless-stopped
+      - name: Run database migrations
+        run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
-volumes:
-  demo_data:
-  sonarqube_data:
-  sonarqube_logs:
-  sonarqube_extensions:
+      - name: Run PHPUnit tests
+        run: php vendor/bin/phpunit
+
+  deploy:
+    name: Deploy to Coolify (pre-prod)
+    runs-on: ubuntu-latest
+    needs: tests
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Trigger Coolify deployment
+        run: |
+          echo "Coolify deployment is triggered automatically via webhook on push."
+          echo "In production, deployment would require manual approval."
