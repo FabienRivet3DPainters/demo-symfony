@@ -2,6 +2,7 @@ services:
   php:
     build:
       context: .
+      dockerfile: Dockerfile
     working_dir: /var/www/symfony
     environment:
       APP_ENV: ${APP_ENV:-dev}
@@ -18,7 +19,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: nginx/Dockerfile
+      dockerfile: nginx/ssl/Dockerfile
     depends_on:
       - php
     ports:
