@@ -25,5 +25,3 @@
 
 # Ignorer les volumes temporaires
 **/volumes/
-
-phpunit.dist.xml
