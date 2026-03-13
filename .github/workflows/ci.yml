@@ -14,7 +14,7 @@ jobs:
     env:
       APP_ENV: test
       DEFAULT_URI:  http://localhost  
-      APP_SECRET: test-secret-for-ci
+      APP_SECRET: ${{ secrets.APP_SECRET }}
       DATABASE_URL: "mysql://demo_user:demo_password@127.0.0.1:3306/demo_test?serverVersion=8.0&charset=utf8mb4"
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
