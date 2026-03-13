@@ -10,11 +10,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/symfony
 
 COPY composer.json composer.lock ./
-RUN composer install --prefer-dist --no-autoloader --no-scripts
+RUN composer install --prefer-dist --no-autoloader --no-scripts --no-dev
 
 COPY . .
 
-RUN composer dump-autoload --optimize
+RUN composer dump-autoload --optimize \
+    && php bin/console cache:clear --env=prod --no-debug || true \
+    && php bin/console cache:warmup --env=prod --no-debug || true \
+    && chown -R www-data:www-data var/
 
 EXPOSE 9000
 CMD ["php-fpm"]
