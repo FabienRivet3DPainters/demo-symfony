@@ -60,7 +60,7 @@ jobs:
         run: rm -rf .phpunit.cache
 
       - name: Run PHPUnit tests
-        run: php vendor/bin/phpunit --testdox --no-cache
+        run: php vendor/bin/phpunit --testdox
 
       - name: Run SonarQube scan
         uses: sonarsource/sonarcloud-github-action@v2
