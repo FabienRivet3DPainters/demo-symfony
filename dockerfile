@@ -1,9 +1,14 @@
 FROM php:8.4-fpm-alpine
 
 RUN apk add --no-cache \
-    libpng-dev libzip-dev icu-dev \
+    libpng-dev \
+    libzip-dev \
+    icu-dev \
     && docker-php-ext-install \
-       pdo_mysql zip intl opcache
+        pdo_mysql \
+        zip \
+        intl \
+        opcache
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -20,4 +25,5 @@ RUN composer dump-autoload --optimize \
     && chown -R www-data:www-data var/
 
 EXPOSE 9000
-CMD ["php-fpm"]
+
+CMD ["sh", "-c", "chown -R www-data:www-data /var/www && chmod -R 755 /var/www && php-fpm"]
