@@ -12,7 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      APP_ENV: test
+      APP_SECRET: test-secret-for-ci
       DATABASE_URL: "mysql://demo_user:demo_password@127.0.0.1:3306/demo_test?serverVersion=8.0&charset=utf8mb4"
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      JWT_PASSPHRASE: ${{ secrets.JWT_PASSPHRASE }}
 
     services:
       mysql:
@@ -48,7 +53,17 @@ jobs:
         run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
       - name: Run PHPUnit tests
-        run: php vendor/bin/phpunit
+        run: php vendor/bin/phpunit --testdox
+
+      - name: Run SonarQube scan
+        uses: sonarsource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=Demo-symfony
+            -Dsonar.sources=src
+            -Dsonar.tests=tests
+            -Dsonar.host.url=https://demo-sonarcube.dev.fabdevlab.fr
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   deploy:
     name: Deploy to Coolify (pre-prod)
@@ -57,7 +72,13 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
-      - name: Trigger Coolify deployment
+      - name: Trigger Coolify deployment via webhook
         run: |
-          echo "Coolify deployment is triggered automatically via webhook on push."
-          echo "In production, deployment would require manual approval."
+          curl -X GET "${{ secrets.COOLIFY_WEBHOOK_URL }}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
+            --fail \
+            --silent \
+            --show-error
+        env:
+          COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
