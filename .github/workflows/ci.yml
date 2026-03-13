@@ -1,55 +1,77 @@
-name: CI Symfony
+version: "3.9"
 
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    env:
-      APP_ENV: test
-      DATABASE_URL: mysql://root:${{ secrets.MYSQL_PASSWORD }}@127.0.0.1:3306/demo?serverVersion=8.0
-
-    services:
+services:
+  php:
+    build:
+      context: .
+    working_dir: /var/www/symfony
+    environment:
+      APP_ENV: ${APP_ENV}
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+    restart: unless-stopped
+    depends_on:
       mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DATABASE: demo
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
+        condition: service_healthy
 
-    steps:
-      - name: Checkout du code
-        uses: actions/checkout@v4
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    depends_on:
+      - php
+    ports:
+      - "80"
+    restart: unless-stopped
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: pdo_mysql, intl, zip
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - demo_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
 
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "80"
+    restart: unless-stopped
 
-      - name: Run migrations
-        run: php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+  sonarqube:
+    image: sonarqube:community
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    ports:
+      - "9000"
+    restart: unless-stopped
 
-      - name: Run unit tests
-        run: php bin/phpunit tests/service/RecommendationServiceTest.php
-
-      - name: Run SonarQube scan
-        uses: sonarsource/sonarcloud-github-action@v2
-        with:
-          args: >
-            -Dsonar.projectKey=Demo-symfony
-            -Dsonar.sources=.
-            -Dsonar.host.url=https://demo-sonarcube.dev.fabdevlab.fr
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+volumes:
+  demo_data:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
