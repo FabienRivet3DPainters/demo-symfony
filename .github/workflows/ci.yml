@@ -73,16 +73,3 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.tests=tests
 
-  deploy:
-    name: Deploy to Coolify (pre-prod)
-    runs-on: ubuntu-latest
-    needs: tests
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-      - name: Trigger Coolify deployment via webhook
-        run: |
-          curl -X GET "${{ secrets.COOLIFY_WEBHOOK_URL }}" \
-            --fail \
-            --silent \
-            --show-error
