@@ -63,14 +63,15 @@ jobs:
         run: php vendor/bin/phpunit --testdox
 
       - name: Run SonarQube scan
-        uses: sonarsource/sonarcloud-github-action@v2
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://demo-sonarcube.dev.fabdevlab.fr
         with:
           args: >
             -Dsonar.projectKey=Demo-symfony
             -Dsonar.sources=src
             -Dsonar.tests=tests
-            -Dsonar.host.url=https://demo-sonarcube.dev.fabdevlab.fr
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   deploy:
     name: Deploy to Coolify (pre-prod)
