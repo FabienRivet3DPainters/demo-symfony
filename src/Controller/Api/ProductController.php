@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/products', name: 'api_products_')]
 class ProductController extends AbstractController
 {
+    // GET /api/products → 401 sans token, 200 avec token
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(ProductRepository $repository): JsonResponse
     {

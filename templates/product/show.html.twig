@@ -1,33 +1,198 @@
 {% extends 'base.html.twig' %}
+{% import 'components/_product_card.html.twig' as components %}
 
-{% block title %}{{ product.name }}{% endblock %}
+{% block title %}{{ product.name }} — La Petite Maison de l'Épouvante{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+  /* ── FICHE PRODUIT ── */
+  .product-show-section {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+  }
+
+  .product-show-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .product-show-header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--crimson);
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    text-shadow: 0 0 20px rgba(200,0,0,0.4);
+  }
+
+  .show-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .show-field {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .show-field:last-of-type { border-bottom: none; }
+
+  .show-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    padding-top: 0.15rem;
+  }
+
+  .show-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .show-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── RECOMMANDATIONS ── */
+  .recommendations-section {
+    padding: 4rem 2rem;
+    background: var(--surface);
+    border-top: 1px solid var(--blood);
+  }
+
+  .section-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    display: block;
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .recommendations-section .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── CARD (nécessaire ici car show.html.twig n'hérite pas du CSS de home) ── */
+  .card-link { text-decoration: none; color: inherit; display: block; height: 100%; }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    height: 100%;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: var(--blood);
+    box-shadow: 0 10px 30px rgba(139,0,0,.2);
+  }
+  .card-category {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: .6rem;
+    text-transform: uppercase;
+    color: var(--crimson);
+    letter-spacing: 3px;
+    margin-bottom: .6rem;
+  }
+  .card-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: .95rem;
+    color: #fff;
+    margin-bottom: .6rem;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: .9rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    margin-top: auto;
+  }
+  .card-price {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    color: var(--crimson);
+  }
+  .badge-reco {
+    display: inline-block;
+    background: var(--blood);
+    color: #fff;
+    font-size: .6rem;
+    font-family: 'Cinzel Decorative', serif;
+    letter-spacing: 2px;
+    padding: .2rem .6rem;
+    border-radius: 2px;
+    margin-bottom: .5rem;
+    text-transform: uppercase;
+  }
+</style>
+{% endblock %}
 
 {% block body %}
 
-<nav class="navbar">
-  <a href="{{ path('app_home') }}" class="navbar-brand">
-    <span class="skull">💀</span> La Petite Maison de l'Épouvante
-  </a>
-  <ul class="navbar-links">
-    <li><a href="{{ path('app_home') }}">Accueil</a></li>
-    <li><a href="{{ path('product_index') }}">Admin</a></li>
-  </ul>
-</nav>
+{# ── FICHE PRODUIT ─────────────────────────────────── #}
+<section class="product-show-section">
 
-<section class="crud-section">
-  <div class="crud-header">
+  <div class="product-show-header">
     <h1>{{ product.name }}</h1>
-    <a href="{{ path('product_index') }}" class="btn btn-secondary">← Retour</a>
+    <a href="{{ path('app_product_index') }}" class="btn-secondary">← Retour au catalogue</a>
   </div>
 
   <div class="show-card">
     <div class="show-field">
-      <span class="show-label">ID</span>
-      <span class="show-value">{{ product.id }}</span>
-    </div>
-    <div class="show-field">
-      <span class="show-label">Nom</span>
-      <span class="show-value">{{ product.name }}</span>
+      <span class="show-label">Catégorie</span>
+      <span class="show-value">{{ product.category }}</span>
     </div>
     <div class="show-field">
       <span class="show-label">Description</span>
@@ -38,28 +203,48 @@
       <span class="show-value">{{ product.price }} €</span>
     </div>
     <div class="show-field">
-      <span class="show-label">Catégorie</span>
-      <span class="show-value">{{ product.category }}</span>
-    </div>
-    <div class="show-field">
       <span class="show-label">Stock</span>
       <span class="show-value
         {% if product.stock > 10 %} stock-ok
         {% elseif product.stock > 0 %} stock-low
         {% else %} stock-empty{% endif %}">
-        {{ product.stock }}
+        {% if product.stock > 10 %}
+          En stock ({{ product.stock }})
+        {% elseif product.stock > 0 %}
+          Stock limité ({{ product.stock }})
+        {% else %}
+          Rupture de stock
+        {% endif %}
       </span>
     </div>
 
+    {# Boutons admin uniquement — base.html.twig gère déjà l'auth #}
+    {% if is_granted('ROLE_ADMIN') %}
     <div class="show-actions">
-      <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-warning">✏️ Éditer</a>
+      <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn-warning">✏️ Éditer</a>
       {{ include('product/_delete_form.html.twig') }}
     </div>
+    {% endif %}
   </div>
+
 </section>
 
-<footer class="footer">
-  <p>💀 La Petite Maison de l'Épouvante © 2026</p>
-</footer>
+{# ── RECOMMANDATIONS ───────────────────────────────── #}
+{% if recommendations is not empty %}
+<section class="recommendations-section">
+  <span class="section-label">Dans la même veine</span>
+  <h2 class="section-title">Vous aimerez aussi</h2>
+  <p class="section-desc">
+    Autres articles de la catégorie
+    <strong style="color: var(--crimson)">{{ product.category }}</strong>
+  </p>
+
+  <div class="products-grid">
+    {% for recommended in recommendations %}
+      {{ components.product_card(recommended, 'Recommandé') }}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 
 {% endblock %}

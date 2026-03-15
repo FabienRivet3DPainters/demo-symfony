@@ -16,8 +16,30 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+
+        <!-- Tests unitaires : zéro BDD, zéro réseau, logique pure -->
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
         </testsuite>
+
+        <!-- Tests fonctionnels : avec BDD MySQL, HTTP, JWT -->
+        <testsuite name="functional">
+            <directory>tests/Functional</directory>
+        </testsuite>
+
     </testsuites>
+
+    <!-- Couverture de code — alimentée par SonarQube -->
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <!-- Pas de valeur à couvrir sur ces fichiers générés -->
+            <directory>src/Entity</directory>
+            <directory>src/Migrations</directory>
+        </exclude>
+    </source>
+
 </phpunit>
+```

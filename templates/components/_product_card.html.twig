@@ -1,0 +1,27 @@
+{% macro product_card(product, badge = null) %}
+<a href="{{ path('app_product_show', {id: product.id}) }}" class="card-link">
+  <div class="card">
+
+    {% if badge %}
+      <span class="badge-reco">{{ badge }}</span>
+    {% endif %}
+
+    <div class="card-category">{{ product.category }}</div>
+    <h3 class="card-title">{{ product.name }}</h3>
+    <p class="card-desc">{{ product.description }}</p>
+
+    <div class="card-footer">
+      <span class="card-price">{{ product.price }} €</span>
+
+      {% if product.stock > 10 %}
+        <span class="stock-ok">En stock</span>
+      {% elseif product.stock > 0 %}
+        <span class="stock-low">Stock limité ({{ product.stock }})</span>
+      {% else %}
+        <span class="stock-empty">Rupture</span>
+      {% endif %}
+    </div>
+
+  </div>
+</a>
+{% endmacro %}

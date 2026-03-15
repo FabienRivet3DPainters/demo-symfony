@@ -6,9 +6,7 @@
   "directories": {
     "test": "tests"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mikadjx/demo-symfony.git"
@@ -20,7 +18,8 @@
     "url": "https://github.com/Mikadjx/demo-symfony/issues"
   },
   "homepage": "https://github.com/Mikadjx/demo-symfony#readme",
-  "dependencies": {
-    "@playwright/test": "^1.58.2"
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0"
   }
 }

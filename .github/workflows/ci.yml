@@ -46,6 +46,7 @@ jobs:
           php-version: '8.4'
           extensions: pdo_mysql, intl, zip, opcache
           tools: composer:v2
+          coverage: xdebug          # ← ajout : nécessaire pour la couverture SonarQube
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-scripts
@@ -59,8 +60,20 @@ jobs:
       - name: Clear PHPUnit cache
         run: rm -rf .phpunit.cache
 
-      - name: Run PHPUnit tests
-        run: php vendor/bin/phpunit --testdox
+      # Tests unitaires — sans BDD, rapides
+      - name: Run unit tests
+        run: php vendor/bin/phpunit --testsuite=unit --testdox
+
+      # Tests fonctionnels — avec BDD MySQL éphémère
+      - name: Run functional tests
+        run: php vendor/bin/phpunit --testsuite=functional --testdox
+
+      # Couverture de code — alimente SonarQube
+      - name: Generate code coverage
+        run: |
+          php vendor/bin/phpunit \
+            --coverage-clover coverage.xml \
+            --testdox
 
       - name: Run SonarQube scan
         uses: sonarsource/sonarqube-scan-action@master
@@ -72,5 +85,5 @@ jobs:
             -Dsonar.projectKey=Demo-symfony
             -Dsonar.sources=src
             -Dsonar.tests=tests
-
-
+            -Dsonar.php.coverage.reportPaths=coverage.xml
+            -Dsonar.php.tests.reportPath=test-report.xml
