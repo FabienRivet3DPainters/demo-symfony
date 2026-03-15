@@ -42,7 +42,7 @@ class LoginControllerTest extends WebTestCase
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('login', [
             '_username' => 'doesNotExist@example.com',
             '_password' => 'password',
         ]);
@@ -57,7 +57,7 @@ class LoginControllerTest extends WebTestCase
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('login', [
             '_username' => 'email@example.com',
             '_password' => 'bad-password',
         ]);
@@ -69,12 +69,12 @@ class LoginControllerTest extends WebTestCase
         self::assertSelectorTextContains('.alert-danger', 'Invalid credentials.');
 
         // Success - Login with valid credentials is allowed.
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('login', [
             '_username' => 'email@example.com',
             '_password' => 'password',
         ]);
 
-        self::assertResponseRedirects('/');
+self::assertResponseRedirects('/admin');
         $this->client->followRedirect();
 
         self::assertSelectorNotExists('.alert-danger');

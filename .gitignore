@@ -1,9 +1,9 @@
 
 ###> symfony/framework-bundle ###
 /.env.local
+/.env.locale
 /.env.local.php
 /.env.*.local
-/.env
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -26,5 +26,3 @@
 
 # Ignorer les volumes temporaires
 **/volumes/
-
-phpunit.dist.xml
