@@ -19,8 +19,13 @@ class HomeController extends AbstractController
     {
         $products = $this->productRepository->findAll();
 
+        $recommended = !empty($products)
+            ? $this->recommendationService->getRecommendations($products[0])
+            : [];
+
         return $this->render('home/index.html.twig', [
             'products' => $products,
+            'recommended' => $recommended,
         ]);
     }
 }

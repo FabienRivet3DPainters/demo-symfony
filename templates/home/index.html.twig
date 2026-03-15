@@ -13,12 +13,39 @@
   </div>
 </section>
 
-<!-- PRODUCTS -->
+<!-- RECOMMANDATIONS -->
+{% if recommended is not empty %}
+<section class="products-section">
+  <h2>Recommandations</h2>
+  <div class="products-grid">
+    {% for product in recommended %}
+    <a href="{{ path('app_product_show', {id: product.id}) }}" class="card-link">
+      <div class="card">
+        <div class="card-category">{{ product.category }}</div>
+        <h3 class="card-title">{{ product.name }}</h3>
+        <p class="card-desc">{{ product.description }}</p>
+        <div class="card-footer">
+          <span class="card-price">{{ product.price }} €</span>
+          <span class="
+            {% if product.stock > 10 %}stock-ok
+            {% elseif product.stock > 0 %}stock-low
+            {% else %}stock-empty{% endif %}">
+            {% if product.stock > 0 %}En stock ({{ product.stock }}){% else %}Rupture{% endif %}
+          </span>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- CATALOGUE COMPLET -->
 <section class="products-section">
   <h2>Nos Produits</h2>
   <div class="products-grid">
     {% for product in products %}
-    <a href="{{ path('app_product_index', {id: product.id}) }}" class="card-link">
+    <a href="{{ path('app_product_show', {id: product.id}) }}" class="card-link">
       <div class="card">
         <div class="card-category">{{ product.category }}</div>
         <h3 class="card-title">{{ product.name }}</h3>
