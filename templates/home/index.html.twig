@@ -74,3 +74,113 @@
 </footer>
 
 {% endblock %}
+
+{% block stylesheets %}
+<style>
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1a0000 0%, #0a0a0a 50%, #1a0000 100%);
+    padding: 5rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #8b0000;
+  }
+  .hero h1 {
+    font-size: 3rem;
+    color: #cc0000;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(200,0,0,0.5);
+  }
+  .hero p {
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-bottom: 2rem;
+  }
+  .btn-hero {
+    background: #8b0000;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  .btn-hero:hover { background: #cc0000; }
+
+  .products-section {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .products-section h2 {
+    font-size: 2rem;
+    color: #cc0000;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: #8b0000;
+  }
+  .card-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #cc0000;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .card-title {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .card-desc {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+    padding-top: 1rem;
+  }
+  .card-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #cc0000;
+  }
+  .stock-ok { color: #4caf50; font-size: 0.85rem; }
+  .stock-low { color: #ff9800; font-size: 0.85rem; }
+  .stock-empty { color: #f44336; font-size: 0.85rem; }
+
+  .footer {
+    background: #111;
+    border-top: 2px solid #8b0000;
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+    margin-top: 4rem;
+  }
+  .footer p { margin: 0.3rem 0; }
+</style>
+{% endblock %}
