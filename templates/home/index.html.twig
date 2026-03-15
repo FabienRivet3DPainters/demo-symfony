@@ -1,92 +1,199 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}La Petite Maison de l'Épouvante{% endblock %}
+{% block title %}La Petite Maison de l'Épouvante — Le lieu de rêve pour frissonner{% endblock %}
 
 {% block stylesheets %}
 <style>
-  .card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,0,0,0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 15% 80%, rgba(80,0,0,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 85% 15%, rgba(60,0,0,0.2) 0%, transparent 60%),
+      #0a0a0a;
   }
 
-  /* ── HERO ───────────────────────────────────────── */
-  .hero {
-    background: linear-gradient(135deg, #1a0000 0%, #0a0a0a 50%, #1a0000 100%);
-    padding: 5rem 2rem;
-    text-align: center;
-    border-bottom: 1px solid var(--blood);
-    position: relative;
-    overflow: hidden;
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(139,0,0,0.025) 3px, rgba(139,0,0,0.025) 4px
+    );
+    pointer-events: none;
   }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.65rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    display: block;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
   .hero h1 {
     font-family: 'Cinzel Decorative', serif;
-    font-size: 2.8rem;
-    color: var(--crimson);
-    margin-bottom: 1rem;
-    text-shadow: 0 0 30px rgba(200,0,0,0.6);
-  }
-  .hero p {
-    font-size: 1.2rem;
-    color: var(--muted);
-    margin-bottom: 2rem;
-    font-style: italic;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(200,0,0,0.5), 0 0 80px rgba(139,0,0,0.25);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
   }
 
-  /* ── SECTIONS PRODUITS ──────────────────────────── */
-  .products-section {
-    padding: 3rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+  .hero h1 span { color: var(--crimson); }
+
+  .hero-sub {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.6s forwards;
   }
-  .products-section h2 {
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.8s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  .hero-scroll svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollBounce {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+    50%       { opacity: 1;   transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── COMMUN SECTIONS ──────────────────────────────── */
+  section { padding: 5rem 2rem; }
+
+  .section-label {
     font-family: 'Cinzel Decorative', serif;
-    font-size: 1.4rem;
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
     color: var(--crimson);
-    margin-bottom: 2rem;
+    display: block;
+    margin-bottom: 0.8rem;
     text-align: center;
-    letter-spacing: 2px;
   }
+
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--muted);
+    text-align: center;
+    max-width: 540px;
+    margin: 0 auto 3.5rem;
+    line-height: 1.8;
+  }
+
+  /* ── PRODUITS EN VEDETTE ──────────────────────────── */
+  .featured-section { background: var(--surface); }
+
   .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto 2.5rem;
   }
 
-  /* ── CARTE PRODUIT ──────────────────────────────── */
+  .card-link { text-decoration: none; color: inherit; display: block; }
+
   .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 1.5rem;
     transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    height: 100%;
   }
   .card:hover {
     transform: translateY(-5px);
     border-color: var(--blood);
-    box-shadow: 0 8px 24px rgba(139,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(139,0,0,0.15);
   }
+
   .card-category {
     font-family: 'Cinzel Decorative', serif;
     font-size: 0.6rem;
     text-transform: uppercase;
     color: var(--crimson);
-    letter-spacing: 2px;
-    margin-bottom: 0.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 0.6rem;
   }
+
   .card-title {
-    font-size: 1.1rem;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
   }
+
   .card-desc {
     font-size: 0.9rem;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    line-height: 1.6;
     font-style: italic;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
   }
+
   .card-footer {
     display: flex;
     justify-content: space-between;
@@ -94,95 +201,497 @@
     border-top: 1px solid var(--border);
     padding-top: 1rem;
   }
+
   .card-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--crimson);
     font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    color: var(--crimson);
   }
 
-  /* ── BADGE RECOMMANDATION ───────────────────────── */
-  .section-recommended {
-    background: linear-gradient(180deg, #1a0000 0%, transparent 100%);
-    border-top: 1px solid var(--blood);
-    border-bottom: 1px solid var(--border);
+  .featured-cta { text-align: center; }
+
+  /* ── UNIVERS ──────────────────────────────────────── */
+  .univers-section { background: var(--dark); }
+
+  .univers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 1050px;
+    margin: 0 auto;
   }
-  .badge-reco {
-    display: inline-block;
-    background: var(--blood);
-    color: #fff;
-    font-size: 0.6rem;
+
+  .univers-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .univers-card:hover {
+    border-color: var(--blood);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(139,0,0,0.15);
+  }
+
+  .univers-icon { font-size: 2.2rem; }
+
+  .univers-card-title {
     font-family: 'Cinzel Decorative', serif;
-    letter-spacing: 2px;
-    padding: 0.2rem 0.6rem;
+    font-size: 0.85rem;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  .univers-card-desc {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .univers-card-tag {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    border: 1px solid var(--blood);
+    padding: 0.2rem 0.7rem;
     border-radius: 2px;
-    margin-bottom: 0.5rem;
+  }
+
+  /* ── FESTIVAL ─────────────────────────────────────── */
+  .festival-section {
+    background: linear-gradient(135deg, #0f0000 0%, #1a0000 50%, #0f0000 100%);
+    border-top: 1px solid var(--blood);
+    border-bottom: 1px solid var(--blood);
+  }
+
+  .festival-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 680px) { .festival-inner { grid-template-columns: 1fr; gap: 2rem; } }
+
+  .festival-badge {
+    display: inline-block;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--ember);
+    border: 1px solid var(--ember);
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .festival-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .festival-desc {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.8rem;
+  }
+
+  .festival-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .festival-list li {
+    font-size: 0.95rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .festival-list li::before { content: '▸'; color: var(--crimson); font-size: 0.8rem; flex-shrink: 0; }
+
+  .festival-visual { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+
+  .festival-year {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 5.5rem;
+    font-weight: 900;
+    color: var(--blood);
+    opacity: 0.2;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .festival-since { text-align: center; }
+  .festival-since .num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 3.5rem;
+    color: var(--crimson);
+    display: block;
+    line-height: 1;
+  }
+  .festival-since .label {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* ── FANZINE ──────────────────────────────────────── */
+  .fanzine-section { background: var(--surface); }
+
+  .fanzine-inner {
+    max-width: 840px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blood);
+    border-radius: 4px;
+    padding: 2.5rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (max-width: 620px) { .fanzine-inner { grid-template-columns: 1fr; padding: 2rem; } }
+
+  .fanzine-tag {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .fanzine-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .fanzine-desc {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .fanzine-meta { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .fanzine-meta-item .val {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.4rem;
+    color: var(--crimson);
+    display: block;
+  }
+  .fanzine-meta-item .key {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
+
+  /* ── EVIL ED ──────────────────────────────────────── */
+  .eviled-section {
+    background: #0d0000;
+    border-top: 1px solid #1a0000;
+    border-bottom: 1px solid #1a0000;
+  }
+
+  .eviled-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+
+  .eviled-badge {
+    display: inline-block;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    color: var(--ember);
+    border: 1px solid var(--ember);
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .eviled-productions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+
+  .prod-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    min-width: 185px;
+    text-align: left;
+    transition: border-color 0.3s;
+  }
+  .prod-card:hover { border-color: var(--ember); }
+
+  .prod-status {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .prod-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.8rem;
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  .prod-type {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+
+  /* ── MAGASINS ─────────────────────────────────────── */
+  .magasins-section { background: var(--dark); }
+
+  .magasins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .magasin-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    background: var(--card-bg);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .magasin-card:hover { border-color: var(--blood); transform: translateY(-3px); }
+
+  .magasin-flag { font-size: 2rem; margin-bottom: 0.6rem; }
+  .magasin-city {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.85rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+  .magasin-name { font-size: 0.8rem; font-style: italic; color: var(--muted); }
+
 </style>
 {% endblock %}
 
 {% block body %}
 
-<!-- HERO -->
+{# ── HERO ───────────────────────────────────────────── #}
 <section class="hero">
   <div class="hero-content">
-    <h1>Le lieu de rêve pour frissonner</h1>
-    <p>Figurines, Blu-ray, Fanzines, Jeux — Tout l'univers de l'horreur et du fantastique</p>
-    <a href="{{ path('app_product_index') }}" class="btn-primary">Découvrir le catalogue</a>
+    <span class="hero-eyebrow">Horreur · Fantastique · Heroic Fantasy</span>
+    <h1>La Petite Maison<br>de <span>l'Épouvante</span></h1>
+    <p class="hero-sub">Le lieu de rêve pour frissonner. Figurines, Blu-ray collector, fanzines spécialisés et jeux de plateau dédiés aux passionnés du genre.</p>
+    <div class="hero-cta">
+      <a href="{{ path('app_product_index') }}" class="btn-primary">Découvrir le catalogue</a>
+      <a href="#fanzine" class="btn-secondary">S'abonner au fanzine</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    <span>Découvrir</span>
   </div>
 </section>
 
-<!-- RECOMMANDATIONS -->
-{% if recommended is not empty %}
-<section class="products-section section-recommended">
-  <h2>⚰ Recommandations pour vous</h2>
+{# ── PRODUITS EN VEDETTE (dynamique) ───────────────── #}
+{% if products is not empty %}
+<section class="featured-section">
+  <span class="section-label">Sélection</span>
+  <h2 class="section-title">Nos produits phares</h2>
+  <p class="section-desc">Une sélection de nos articles les plus appréciés, disponibles en magasin et bientôt en ligne.</p>
+
   <div class="products-grid">
-    {% for product in recommended %}
-    <a href="{{ path('app_product_show', {id: product.id}) }}" class="card-link">
+    {% for product in products %}
+    <a href="{{ path('app_product_index') }}" class="card-link">
       <div class="card">
-        <span class="badge-reco">Recommandé</span>
         <div class="card-category">{{ product.category }}</div>
         <h3 class="card-title">{{ product.name }}</h3>
         <p class="card-desc">{{ product.description }}</p>
         <div class="card-footer">
           <span class="card-price">{{ product.price }} €</span>
-          <span class="
-            {% if product.stock > 10 %}stock-ok
-            {% elseif product.stock > 0 %}stock-low
-            {% else %}stock-empty{% endif %}">
+          <span class="{% if product.stock > 10 %}stock-ok{% elseif product.stock > 0 %}stock-low{% else %}stock-empty{% endif %}">
             {% if product.stock > 0 %}En stock ({{ product.stock }}){% else %}Rupture{% endif %}
           </span>
         </div>
       </div>
     </a>
     {% endfor %}
+  </div>
+
+  <div class="featured-cta">
+    <a href="{{ path('app_product_index') }}" class="btn-primary">Voir tout le catalogue</a>
   </div>
 </section>
 {% endif %}
 
-<!-- CATALOGUE COMPLET -->
-<section class="products-section">
-  <h2>Nos Produits</h2>
-  <div class="products-grid">
-    {% for product in products %}
-    <a href="{{ path('app_product_show', {id: product.id}) }}" class="card-link">
-      <div class="card">
-        <div class="card-category">{{ product.category }}</div>
-        <h3 class="card-title">{{ product.name }}</h3>
-        <p class="card-desc">{{ product.description }}</p>
-        <div class="card-footer">
-          <span class="card-price">{{ product.price }} €</span>
-          <span class="
-            {% if product.stock > 10 %}stock-ok
-            {% elseif product.stock > 0 %}stock-low
-            {% else %}stock-empty{% endif %}">
-            {% if product.stock > 0 %}En stock ({{ product.stock }}){% else %}Rupture{% endif %}
-          </span>
+{# ── UNIVERS ────────────────────────────────────────── #}
+<section class="univers-section">
+  <span class="section-label">Notre univers</span>
+  <h2 class="section-title">Tout l'univers du frisson</h2>
+  <p class="section-desc">Quatre catégories, une passion commune pour l'horreur et le fantastique.</p>
+
+  <div class="univers-grid">
+    <a href="{{ path('app_product_index') }}?category=figurines" class="univers-card">
+      <span class="univers-icon">🧟</span>
+      <span class="univers-card-title">Figurines</span>
+      <p class="univers-card-desc">Éditions limitées résine, pièces peintes à la main par des artisans passionnés.</p>
+      <span class="univers-card-tag">Exclusivité Evil Ed</span>
+    </a>
+    <a href="{{ path('app_product_index') }}?category=blu-ray" class="univers-card">
+      <span class="univers-icon">🎬</span>
+      <span class="univers-card-title">Blu-ray & DVD</span>
+      <p class="univers-card-desc">Editions collector 4K, restaurations inédites, films introuvables.</p>
+      <span class="univers-card-tag">Collector</span>
+    </a>
+    <a href="{{ path('app_product_index') }}?category=jeux" class="univers-card">
+      <span class="univers-icon">🎲</span>
+      <span class="univers-card-title">Jeux de plateau</span>
+      <p class="univers-card-desc">Ambiances horrifiques, coopératifs ou compétitifs, pour 2 à 6 joueurs.</p>
+      <span class="univers-card-tag">Tournois festival</span>
+    </a>
+    <a href="#fanzine" class="univers-card">
+      <span class="univers-icon">📖</span>
+      <span class="univers-card-title">Fanzine</span>
+      <p class="univers-card-desc">4 numéros par an, papier et numérique. Horreur, fantastique, heroic fantasy.</p>
+      <span class="univers-card-tag">Abonnement</span>
+    </a>
+  </div>
+</section>
+
+{# ── FESTIVAL ───────────────────────────────────────── #}
+<section class="festival-section">
+  <div class="festival-inner">
+    <div>
+      <span class="festival-badge">Événement annuel</span>
+      <h2 class="festival-title">Le Petit Festival<br>de l'Épouvante</h2>
+      <p class="festival-desc">Depuis 5 ans, un rendez-vous incontournable pour les passionnés du genre horrifique et fantastique.</p>
+      <ul class="festival-list">
+        <li>Projections de films de genre</li>
+        <li>Ventes de produits dérivés exclusifs</li>
+        <li>Masterclasses avec des professionnels</li>
+        <li>Tournois de jeux de plateau</li>
+      </ul>
+    </div>
+    <div class="festival-visual">
+      <div class="festival-year">2026</div>
+      <div class="festival-since">
+        <span class="num">5</span>
+        <span class="label">Éditions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── FANZINE ────────────────────────────────────────── #}
+<section class="fanzine-section" id="fanzine">
+  <div class="fanzine-inner">
+    <div>
+      <span class="fanzine-tag">Horreur · Fantastique · Heroic Fantasy</span>
+      <h2 class="fanzine-title">Abonnez-vous<br>au fanzine</h2>
+      <p class="fanzine-desc">Disponible en version papier et numérique. Quatre numéros par an, livrés chez vous ou accessibles depuis votre espace personnel.</p>
+      <div class="fanzine-meta">
+        <div class="fanzine-meta-item">
+          <span class="val">4</span>
+          <span class="key">Numéros / an</span>
+        </div>
+        <div class="fanzine-meta-item">
+          <span class="val">2</span>
+          <span class="key">Formats</span>
         </div>
       </div>
-    </a>
-    {% endfor %}
+    </div>
+    <div>
+      {% if app.user %}
+        <a href="{{ path('admin') }}" class="btn-primary">Mon espace</a>
+      {% else %}
+        <a href="{{ path('app_register') }}" class="btn-primary">S'abonner</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ── EVIL ED ────────────────────────────────────────── #}
+<section class="eviled-section">
+  <div class="eviled-inner">
+    <span class="eviled-badge">Collectif Evil Ed</span>
+    <h2 class="section-title">Production & Édition</h2>
+    <p class="section-desc">Notre collectif produit des web séries de genre et édite des films oubliés en version restaurée.</p>
+    <div class="eviled-productions">
+      <div class="prod-card">
+        <span class="prod-status">En production</span>
+        <div class="prod-title">L'Orc</div>
+        <div class="prod-type">Web série + BD</div>
+      </div>
+      <div class="prod-card">
+        <span class="prod-status">Pré-production</span>
+        <div class="prod-title">Série 2 & 3</div>
+        <div class="prod-type">Web séries</div>
+      </div>
+      <div class="prod-card">
+        <span class="prod-status">En cours</span>
+        <div class="prod-title">Riflesso di un coltello<br>nella notte</div>
+        <div class="prod-type">Restauration Blu-ray 4K</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── MAGASINS ───────────────────────────────────────── #}
+<section class="magasins-section">
+  <span class="section-label">Nos boutiques</span>
+  <h2 class="section-title">Retrouvez-nous en magasin</h2>
+  <p class="section-desc">Quatre boutiques physiques pour vivre l'expérience au-delà de l'écran.</p>
+  <div class="magasins-grid">
+    <div class="magasin-card">
+      <div class="magasin-flag">🇫🇷</div>
+      <div class="magasin-city">Angoulême</div>
+      <div class="magasin-name">La Petite Maison de l'Épouvante</div>
+    </div>
+    <div class="magasin-card">
+      <div class="magasin-flag">🇫🇷</div>
+      <div class="magasin-city">Aix-en-Provence</div>
+      <div class="magasin-name">La Petite Maison de l'Épouvante</div>
+    </div>
+    <div class="magasin-card">
+      <div class="magasin-flag">🇫🇷</div>
+      <div class="magasin-city">Lyon</div>
+      <div class="magasin-name">La Petite Maison de l'Épouvante</div>
+    </div>
+    <div class="magasin-card">
+      <div class="magasin-flag">🇬🇧</div>
+      <div class="magasin-city">Londres</div>
+      <div class="magasin-name">The Little House of Thrill</div>
+    </div>
   </div>
 </section>
 
