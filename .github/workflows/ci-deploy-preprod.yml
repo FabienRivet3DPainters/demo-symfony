@@ -1,0 +1,23 @@
+name: "CD — Deploy Preprod"
+
+# Déclenché après CI build/tests réussi
+on:
+  workflow_run:
+    workflows: ["CI — Build, Security & Tests"]
+    types: [completed]
+    branches: [main, master]
+
+jobs:
+  deploy-preprod:
+    name: "Deploy → Preprod (Coolify)"
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Trigger Coolify Preprod deployment
+        run: |
+          curl -X GET "${{ secrets.COOLIFY_WEBHOOK_PREPROD }}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN_PREPROD }}" \
+            --fail \
+            --silent \
+            --show-error

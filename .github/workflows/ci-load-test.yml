@@ -1,0 +1,41 @@
+name: "CI — Load Tests (K6)"
+
+# Déclenché après déploiement production réussi
+# Les tests de charge s'exécutent sur la PROD
+on:
+  workflow_run:
+    workflows: ["CD — Deploy Production"]
+    types: [completed]
+    branches: [main, master]
+
+jobs:
+  load-test:
+    name: "7 — Load Tests (K6 sur Production)"
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install K6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring \
+            --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+            --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
+            | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6 -y
+
+      # BASE_URL pointe sur la PROD
+      # Résultats envoyés sur Grafana Cloud via K6_CLOUD_TOKEN
+      - name: Run K6 load test
+        run: k6 run k6/load-test.js
+        env:
+          BASE_URL: https://demo-nginix.dev.fabdevlab.fr
+          K6_USERNAME: ${{ secrets.E2E_USER_EMAIL }}
+          K6_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
+          K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}

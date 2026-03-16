@@ -1,0 +1,81 @@
+Grille d'évaluation
+Bloc de compétences
+Thèmes Points à 
+attribuer
+Points 
+obtenus
+2
+4
+1
+3
+1
+2
+Maintenir et développer 
+son expertise en 
+développement 
+d’applications 
+NOTATION
+Commentaires/Argumentations Critères
+Le protocole d’expérimentation en bac à sable est présenté. Il 
+comprend les technologies et plateformes testées ainsi que leurs 
+interactions. Les difficultés rencontrées et les résultats obtenus 
+sont présentés et permettent de valider l’adoption des 
+technologies.
+L’implémentation technique du POC valide la faisabilité des points 
+clés de l’architecture de la solution applicative à développer 
+(découpage applicatif, communication interservice, sécurité, 
+hébergement, orchestration, etc.), elle est documentée.
+La fonctionnalité métier développée au niveau du POC répond aux 
+besoins fonctionnels exprimés par la maîtrise d’ouvrage. 
+Le processus de livraison continue est schématisé. Il est conforme 
+aux exigences de développement et de mise en production. Le 
+POC intègre la plateforme de livraison continue conformément au 
+processus décrit.
+Les compétences de l’équipe sont recensées. Les expertises 
+techniques à acquérir sont identifiées. Au moins une action de 
+formation est proposée.
+Le POC s’exécute dans un environnement managé. La disponibilité 
+et la montée en charge de l’application sont démontrées.
+Piloter le développement et 
+le déploiement 
+d’applications
+Grille d'évaluation bloc3 dev.xlsx 1/2
+Grille d'évaluation
+Bloc de compétences
+1
+2
+2
+1
+1
+Total : 20 Note (lettre) :
+De 16 à 20
+ =  A
+De 0 à 7,99
+ =  D
+Élaborer le processus 
+d’assurance qualité 
+logicielle
+Présentation orale
+Au moins 4 indicateurs sont définis. Ils servent les objectifs de 
+qualité logicielle (fonctionnalité, performance, maintenabilité, 
+fiabilité). Leur mesure met en évidence des axes d’amélioration 
+pouvant réduire la dette technique. 
+De 12 à 15,99
+ =  B
+De 8 à 11,99
+ =  C
+Le processus de test est formalisé. Il présente les différents types 
+de tests, les outils de tests associés (unitaires, intégration, non 
+régression, performances, fonctionnels, conformité réglementaire, 
+etc.) et les parties prenantes. Au moins deux types de tests sont 
+appliqués au POC. Ils sont exécutés avec succès.
+la prestation orale est fluide et dynamique. Elle prend en compte 
+l'auditoire. Le vocabulaire est précis et adapté. Elle est structurée.
+Conversion lettre
+ Les schémas et tableaux sont lisibles et adaptés à une 
+présentation orale. Ils sont utilisés pour supporter la prestation 
+orale.
+Le plan de remédiation priorise les actions pour réduire les risques 
+de sécurité critiques du parc applicatif du SI. Le POC intègre au 
+moins deux bonnes pratiques pour sécuriser l’application.
+Grille d'évaluation bloc3 dev.xlsx
