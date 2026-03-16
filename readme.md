@@ -10,7 +10,7 @@ Fonctionnalité implémentée : **Catalogue produits avec recommandations**.
 - [VS Code](https://code.visualstudio.com/) avec l'extension **Remote - WSL**
 - Git
 
------- 
+---------
 **test*
 ## Installation (première fois uniquement)
 
