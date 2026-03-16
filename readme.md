@@ -107,7 +107,7 @@ code .
 | API Produit par ID | https://localhost:8080/api/products/{id} |
 | phpMyAdmin | https://localhost:8888 |
 
----
+------
 
 ## Connexion phpMyAdmin
 | Champ | Valeur |
