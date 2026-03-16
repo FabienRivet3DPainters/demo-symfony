@@ -11,7 +11,8 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-/var/www/symfony/config/jwt/private.pem}
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-/var/www/symfony/config/jwt/public.pem}
       JWT_PASSPHRASE: ${JWT_PASSPHRASE:-change-me-in-production}
-      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-0}
+      DOCTRINE_SERVER_VERSION: ${DOCTRINE_SERVER_VERSION:-8.0.36}
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-1}
     restart: unless-stopped
     depends_on:
       mysql:

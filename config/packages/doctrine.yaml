@@ -4,8 +4,9 @@ doctrine:
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
-        # Forced to MySQL 8 to avoid DBAL auto-detection fallback/deprecations in containers.
-        server_version: '8.0.0'
+        # Use env-driven DB server version to avoid DBAL auto-detection issues in containers.
+        # Examples: 8.0.36 (MySQL), mariadb-10.11.0 (MariaDB).
+        server_version: '%env(default:8.0.36:DOCTRINE_SERVER_VERSION)%'
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         validate_xml_mapping: true
