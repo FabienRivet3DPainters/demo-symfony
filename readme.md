@@ -99,6 +99,25 @@ code .
 
 ---
 
+
+## Déploiement Coolify (Debian + Docker)
+
+1. Crée un service **Docker Compose** dans Coolify et pointe-le sur ce dépôt.
+2. Configure les variables suivantes dans Coolify (obligatoires) :
+   - `APP_SECRET`
+   - `MYSQL_ROOT_PASSWORD`
+   - `MYSQL_DATABASE`
+   - `MYSQL_USER`
+   - `MYSQL_PASSWORD`
+   - `JWT_PASSPHRASE`
+3. Optionnel : active `RUN_MIGRATIONS=1` au premier déploiement pour lancer automatiquement les migrations.
+4. Expose le service `nginx` (port interne `80`) ; l'application est mappée par défaut sur `APP_PORT=8080` en local.
+
+> Note : les clés JWT sont générées automatiquement au démarrage si elles n'existent pas.
+> SonarQube est temporairement désactivé dans `docker-compose.yml` et dans la CI.
+
+---
+
 ## URLs
 | Service | URL |
 |---|---|
