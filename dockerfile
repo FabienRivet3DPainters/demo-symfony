@@ -23,6 +23,7 @@ COPY . .
 
 RUN composer dump-autoload --optimize \
     && php bin/console cache:clear --env=prod --no-debug || true \
+    && php bin/console doctrine:migrations:migrate --no-interaction --env=prod || true \
     && php bin/console cache:warmup --env=prod --no-debug || true \
     && chown -R www-data:www-data var/ \
     && chmod -R 755 /var/www
