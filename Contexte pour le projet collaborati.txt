@@ -1,0 +1,95 @@
+Contexte pour le projet collaboratif et l’évaluation du bloc  
+Superviser et assurer le développement des applications logicielles 
+V1 – 06/03/2025 
+La supervision du développement de la petite maison de l’épouvante est une simulation. 
+Enoncé 
+1. L’entreprise 
+La Petite Maison de l’Épouvante (l’accroche : Le lieu de rêve pour frissonner) est une entreprise fondée par cinq 
+passionnés du genre horrifique il y a un peu moins de 10 ans. Deux des fondateurs travaillaient auparavant dans une 
+ESN, l’un comme administrateur systèmes et réseaux et l’autre comme architecte de solution.  
+Au départ, leur activité principale était l’édition d’un fanzine spécialisé dans l’horreur, qui s’est ensuite élargi au 
+fantastique et à l’heroic fantasy. Le fanzine est disponible en version papier et numérique, avec quatre numéros par an 
+accessibles via un abonnement.  
+L’entreprise dispose aujourd’hui de trois magasins physiques situés à Angoulême, Aix-en-Provence et Lyon, où elle 
+propose à la vente des produits dérivés : goodies, films (DVD, Blu-ray), bandes dessinées et jeux de société. Un magasin 
+a été ouvert l’an dernier à Londres, the little house of thrill 
+L’entreprise ne dispose pour l’instant que d’un site vitrine sans fonctionnalité de vente en ligne b si ce n’est la possibilité 
+de s’abonner au fanzine et recevoir une news letter. Le site est basé sur un CMS 
+Chaque année, depuis 5 ans, La Petite Maison de l’Épouvante organise un événement majeur : le Petit Festival de 
+l’Épouvante. Ce festival propose des projections de films, des ventes de produits dérivés, des masterclasses et des 
+tournois de jeux de plateau. Avec l’essor du numérique et une demande croissante pour des produits spécialisés, la 
+direction souhaite développer une plateforme en ligne plus avancée, intégrant la vente de produits et un espace 
+communautaire. 
+Depuis peu l’entreprise a aussi monté un collectif de production et d’édition, Evil Ed, s’appuyant sur du crowdfunding. 
+L’idée est de produire des web séries de genre et pourquoi pas dans un second temps des films à petit budget de genre. 
+La partie Edition consiste à éditer des films « oubliés » en version restaurée voire éditer des bandes dessinées. 
+Actuellement la première web série « L’Orc » est en cours de réalisation avec en parallèle la préparation de la BD qui se 
+déroule dans le même univers. Deux autres series sont en pré-production. La restauration et l’authoring Blu-ray d’un 
+film d’horreur Italien jamais sorti en France (riflesso di un coltello nella notte) est bien avancée. La société possède son 
+propre site vitrine. 
+Le « Système d’information », notez les guillemets, est très hétérogène, fragmenté. Il est géré par un technicien avec 
+l’aide sporadiques des 2 anciens de l’IT qui aiment intervenir par nostalgie. Les solutions logicielles sont hébergées chez 
+un fournisseur cloud français. On retrouve des applications classiques de gestion de stock, gestion des fournisseurs, un 
+CRM. Les échanges électroniques de documents et données se font manuellement via tableurs csv La suite bureautique 
+est Libre Office. La messagerie est basée sur Gmail. Les PC et portables sont sous Ubuntu. A l’exception de la station 
+graphique sous Mac (magasin de Paris) qui sert à la création du fanzine et des news letters. 
+Les magasins disposent bien évidemment d’un système de caisse. Chaque magasin a son propre stock. En fonction des 
+ruptures, les autres magasins peuvent transférer l’article s’ils l’ont en stock. L’entreprise est sous contrat transporteur 
+avec La Poste 
+Page 1/3 
+Contexte la petite maison de l’épouvante- Superviser et assurer le développement des applications logicielles - V1 - 06/03/2025   
+Contexte pour le projet collaboratif et l’évaluation du bloc  
+Superviser et assurer le développement des applications logicielles 
+V1 – 06/03/2025 
+Le serveur de fichier basé sur Ubuntu est situé physiquement dans le magasin de Paris. L’entreprise a intégré Veam pour 
+ses sauvegardes internes. Le serveur est accessible en VPN.  
+Le collectif Evil Ed a sa propre infrastructure média localisé dans leur bureau parisien avec notamment des stations de 
+montage, d’authoring, etc. les rushes, les fichiers, etc. sont stockés en local sur un serveur multimédia de grande 
+capacité redondé sur 2 nœuds.  
+Pour rester dans l’air du temps et répondre aux attentes des clients, la direction souhaite souhaite frapper un grand coup 
+avec une nouvelle plateforme numérique, qui inclura notamment les fonctionnalités de vente en ligne et un espace 
+communautaire. Pour cela une toute nouvelle équipe IT1 a été recrutée : un.e architecte logiciel ex lead developer2, deux 
+développeur.euse.s juniors avec 5 ans d’expérience en alternance. De nouvelles embauches sont possibles pour garantir 
+la réussite du projet. 
+2. Exigences petitemaisonepouvante.com 
+Il s’agit d’un sujet fictif, des exigences peuvent donc être ajoutées pour répondre aux consignes ou les enrichir. Il faut 
+cependant rester cohérent avec le contexte de l’entreprise. 
+La petite maison de l’épouvante veut donc créer la version « blockbuster » de son site. Bref proposer une plateforme 
+moderne de vente en ligne de produits et aussi de diffusion. 
+La partie vente en ligne inclut : 
+• La vente en lignes de produits qu’on retrouve aussi en magasin (figurines, jeux, blu-ray, etc.). A ce propos, le 
+collectif Evil Ed, envisage de développer sa gamme de figurine qui sera vendue en exclusivité sur le site. 
+• La vente de numéros digitalisés du fanzine, lisibles depuis une liseuse intégrée dans l’espace de l’utilisateur 
+authentifié. 
+• L’abonnement au fanzine (papier et numérique) ou le renouvellement de l’abonnement. 
+L’application doit proposer un système de recommandation de produits en fonction des recherches, achats des 
+utilisateurs. 
+L’application en ligne doit aussi inclure un espace communautaire de trocs, d’échange entre particuliers. 
+• Un utilisateur pourra proposer une liste de goodies qu’il propose d’échanger ou … de donner.  
+• Les inscrits pourront recevoir une notification automatique lorsqu’un article en relation avec leurs centres 
+d’intérêt est proposé. Idéalement, il faudrait aussi que les notifications d’articles d’intérêt puissent être 
+envoyées en fonction du comportement de navigation d’un utilisateur sur le site 
+• Bien évidemment cet espace nécessitera des fonctionnalités de modération 
+Les utilisateurs authentifiés ont donc un espace dédié où ils peuvent proposer des articles à échanger ou donner et où 
+ils peuvent lister les articles qu’ils recherchent. Dans cet espace les utilisateurs pourront aussi régler le système de 
+notification et de recommandation. Ils auront aussi accès à un chat pour discuter entre passionnés. 
+L’espace dédié inclut aussi les fonctionnalités classiques de suivi d’un achat, l’historiques des achats, etc. 
+1Vous en groupe projet 
+2Vous pour la validation de bloc individuelle 
+Page 2/3 
+Contexte la petite maison de l’épouvante- Superviser et assurer le développement des applications logicielles - V1 - 06/03/2025   
+Contexte pour le projet collaboratif et l’évaluation du bloc  
+Superviser et assurer le développement des applications logicielles 
+V1 – 06/03/2025 
+Le site proposera régulièrement des news, des articles de fond accessibles à tout internaute. 
+L’interface doit bien sûr être fluide, ergonomique et respecter la RGAA. 
+L’entreprise aimerait que l’application soit hébergée en Europe.  
+La sécurité est une contrainte forte car il s’agit d’une plateforme à viser commerciale. 
+Les dirigeant envisagent d’intégrer dans la v2 un système d’enchère à la Ebay et aussi la possibilité de diffuser les 
+productions d’Evil Ed. Il est aussi envisagé, peut-être en v3, de diffuser en ligne les films du festival dans un mode 
+restreint (un nombre de place limité et des plages horaires de diffusion fixées) pour respecter l’ambiance festival.  
+Les nouvelles fonctionnalités sont acceptées pour la mise en œuvre dans le cadre de l’exercice. Vous pouvez aussi 
+proposer d’autres fonctionnalités tant qu’elles sont en lien avec le domaine métier ou qu’elles ne contredisent pas les 
+exigences. 
+Page 3/3 
+Contexte la petite maison de l’épouvante- Superviser et assurer le développement des applications logicielles - V1 - 06/03/2025  
