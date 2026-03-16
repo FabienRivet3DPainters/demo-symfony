@@ -17,7 +17,7 @@ Fonctionnalité implémentée : **Catalogue produits avec recommandations**.
 ### 0 — Installer WSL2 et Ubuntu
 Dans **PowerShell en administrateur** :
 ```powershell
-wsl --install
+wsl --install --
 ```
 Redémarre le PC si demandé. Puis ouvre **Ubuntu** depuis le menu Démarrer.
 
