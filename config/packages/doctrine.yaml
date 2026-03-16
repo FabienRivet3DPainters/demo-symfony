@@ -6,7 +6,7 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         # Use env-driven DB server version to avoid DBAL auto-detection issues in containers.
         # Examples: 8.0.36 (MySQL), mariadb-10.11.0 (MariaDB).
-        server_version: '%env(default:8.0.36:DOCTRINE_SERVER_VERSION)%'
+        server_version: '%env(DOCTRINE_SERVER_VERSION)%'
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         validate_xml_mapping: true
