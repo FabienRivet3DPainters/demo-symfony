@@ -1,5 +1,4 @@
 services:
-
   php:
     build:
       context: .
@@ -36,9 +35,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-demo_password}
     volumes:
       - demo_data:/var/lib/mysql
-    # caching_sha2_password : méthode d'auth recommandée MySQL 8.0
-    # mysql_native_password est déprécié (voir plan de remédiation)
-    command: --default-authentication-plugin=caching_sha2_password
+    command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
