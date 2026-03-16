@@ -1,20 +1,16 @@
 name: "CI — E2E Tests (Playwright)"
 
-# Déclenché uniquement quand "CI — Build, Security & Tests" est terminé avec succès
-# sur la branche main — jamais sur les pull requests
+# Déclenché après déploiement preprod réussi
+# Les E2E testent la PREPROD, pas la prod
 on:
   workflow_run:
-    workflows: ["CI — Build, Security & Tests"]
+    workflows: ["CD — Deploy Preprod"]
     types: [completed]
     branches: [main, master]
 
 jobs:
-
-  # ── ÉTAPE 5 : TESTS END-TO-END ──────────────────────────────────────────────
-  # Tests navigateur Playwright sur l'app déployée sur Coolify
-  # Se déclenche uniquement si le workflow CI précédent a réussi
   test-e2e:
-    name: "5 — E2E Tests (Playwright)"
+    name: "5 — E2E Tests (Playwright sur Preprod)"
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
@@ -33,10 +29,11 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      # BASE_URL pointe sur la PREPROD
       - name: Run Playwright tests
         run: npx playwright test
         env:
-          BASE_URL: ${{ secrets.E2E_BASE_URL }}
+          BASE_URL: https://preprod-nginix.dev.fabdevlab.fr
           E2E_USER_EMAIL: ${{ secrets.E2E_USER_EMAIL }}
           E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
 

@@ -1,21 +1,16 @@
 name: "CI — Load Tests (K6)"
 
-# Déclenché uniquement après un déploiement Coolify réussi
-# Les tests de charge s'exécutent sur l'app en production, pas en local
+# Déclenché après déploiement production réussi
+# Les tests de charge s'exécutent sur la PROD
 on:
   workflow_run:
-    workflows: ["CI — Deploy to Coolify"]
+    workflows: ["CD — Deploy Production"]
     types: [completed]
     branches: [main, master]
 
 jobs:
-
-  # ── ÉTAPE 7 : TESTS DE CHARGE ────────────────────────────────────────────────
-  # K6 simule une montée en charge sur l'app déployée
-  # Résultats envoyés sur Grafana Cloud pour visualisation
-  # continue-on-error : un dépassement de seuil génère un rapport mais ne bloque pas
   load-test:
-    name: "7 — Load Tests (K6)"
+    name: "7 — Load Tests (K6 sur Production)"
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     continue-on-error: true
@@ -35,12 +30,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install k6 -y
 
-      # Les seuils sont définis dans le script K6 lui-même (p95 < 200ms, error rate < 1%)
-      # Les résultats sont envoyés sur Grafana Cloud via K6_CLOUD_TOKEN
+      # BASE_URL pointe sur la PROD
+      # Résultats envoyés sur Grafana Cloud via K6_CLOUD_TOKEN
       - name: Run K6 load test
         run: k6 run k6/load-test.js
         env:
-          BASE_URL: ${{ secrets.E2E_BASE_URL }}
+          BASE_URL: https://demo-nginix.dev.fabdevlab.fr
           K6_USERNAME: ${{ secrets.E2E_USER_EMAIL }}
           K6_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
           K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
