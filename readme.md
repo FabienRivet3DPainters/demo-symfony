@@ -11,7 +11,7 @@ Fonctionnalité implémentée : **Catalogue produits avec recommandations**.
 - Git
 
 ---------
-**test*
+
 ## Installation (première fois uniquement)
 
 ### 0 — Installer WSL2 et Ubuntu
