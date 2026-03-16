@@ -5,12 +5,13 @@ services:
       dockerfile: Dockerfile
     working_dir: /var/www/symfony
     environment:
-      APP_ENV: ${APP_ENV:-dev}
-      APP_SECRET: ${APP_SECRET:-your-secret-placeholder}
+      APP_ENV: ${APP_ENV:-prod}
+      APP_SECRET: ${APP_SECRET:-change-me-in-production}
       DATABASE_URL: "mysql://${MYSQL_USER:-demo_user}:${MYSQL_PASSWORD:-demo_password}@mysql:3306/${MYSQL_DATABASE:-demo}?serverVersion=8.0&charset=utf8mb4"
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-%kernel.project_dir%/config/jwt/private.pem}
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-%kernel.project_dir%/config/jwt/public.pem}
-      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-your-passphrase-placeholder}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-/var/www/symfony/config/jwt/private.pem}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY:-/var/www/symfony/config/jwt/public.pem}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-change-me-in-production}
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-0}
     restart: unless-stopped
     depends_on:
       mysql:
@@ -22,7 +23,7 @@ services:
       dockerfile: nginx/ssl/Dockerfile
     depends_on:
       - php
-    ports:
+    expose:
       - "80"
     restart: unless-stopped
 
@@ -48,29 +49,30 @@ services:
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
-      PMA_USER: ${MYSQL_USER:-demo}
+      PMA_USER: ${MYSQL_USER:-demo_user}
       PMA_PASSWORD: ${MYSQL_PASSWORD:-demo_password}
     depends_on:
       mysql:
         condition: service_healthy
-    ports:
+    expose:
       - "80"
     restart: unless-stopped
 
-  sonarqube:
-    image: sonarqube:community
-    environment:
-      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_logs:/opt/sonarqube/logs
-      - sonarqube_extensions:/opt/sonarqube/extensions
-    ports:
-      - "9000"
-    restart: unless-stopped
+  # SonarQube désactivé temporairement
+  # sonarqube:
+  #   image: sonarqube:community
+  #   environment:
+  #     SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+  #   volumes:
+  #     - sonarqube_data:/opt/sonarqube/data
+  #     - sonarqube_logs:/opt/sonarqube/logs
+  #     - sonarqube_extensions:/opt/sonarqube/extensions
+  #   ports:
+  #     - "9000:9000"
+  #   restart: unless-stopped
 
 volumes:
   demo_data:
-  sonarqube_data:
-  sonarqube_logs:
-  sonarqube_extensions:
+  # sonarqube_data:
+  # sonarqube_logs:
+  # sonarqube_extensions:
