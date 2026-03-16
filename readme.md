@@ -118,6 +118,8 @@ code .
 
 > En local (hors Coolify), utilise un override Compose si tu veux des ports hôte (ex: `8080:80`).
 
+> Si tu utilises MariaDB (ou une BDD externe non-MySQL 8), adapte `DATABASE_URL` avec `serverVersion` correct (ex: `10.11.0-MariaDB`) pour éviter les erreurs/deprecations Doctrine DBAL.
+
 ---
 
 ## URLs
