@@ -15,12 +15,12 @@ RUN composer install --prefer-dist --no-autoloader --no-scripts --no-dev
 
 COPY . .
 
-RUN composer dump-autoload --optimize \
-    && php bin/console cache:clear --env=prod --no-debug || true \
-    && php bin/console cache:warmup --env=prod --no-debug || true \
-    && chown -R www-data:www-data var/ \
-    && chmod -R 755 /var/www
+RUN mkdir -p var config/jwt \
+    && composer dump-autoload --optimize --no-dev --classmap-authoritative \
+    && chown -R www-data:www-data var config/jwt \
+    && chmod -R 755 /var/www \
+    && chmod +x /var/www/symfony/docker/php-entrypoint.sh
 
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD ["/var/www/symfony/docker/php-entrypoint.sh"]
