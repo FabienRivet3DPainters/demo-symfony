@@ -24,7 +24,7 @@ services:
     depends_on:
       - php
     ports:
-      - "${APP_PORT:-8080}:80"
+      - "80"
     restart: unless-stopped
 
   mysql:
@@ -55,7 +55,7 @@ services:
       mysql:
         condition: service_healthy
     ports:
-      - "${PHPMYADMIN_PORT:-8081}:80"
+      - "80"
     restart: unless-stopped
 
   # SonarQube désactivé temporairement
