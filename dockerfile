@@ -7,7 +7,7 @@ RUN apk add --no-cache \
 
 # Configuration PHP pour production
 RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/custom.ini \
-    && echo "max_execution_time=30" >> /usr/local/etc/php/conf.d/custom.ini \
+    && echo "max_execution_time=60" >> /usr/local/etc/php/conf.d/custom.ini \
     && echo "upload_max_filesize=10M" >> /usr/local/etc/php/conf.d/custom.ini \
     && echo "post_max_size=10M" >> /usr/local/etc/php/conf.d/custom.ini
 
