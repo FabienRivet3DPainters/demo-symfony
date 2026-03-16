@@ -15,7 +15,6 @@ RUN composer install \
     --prefer-dist \
     --no-autoloader \
     --no-scripts \
-    --no-dev \
     --no-interaction
 
 COPY . .
