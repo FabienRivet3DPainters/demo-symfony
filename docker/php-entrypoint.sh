@@ -16,4 +16,8 @@ if [ "${RUN_MIGRATIONS:-0}" = "1" ]; then
   php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration || true
 fi
 
+# Ensure cache/log files created by startup commands remain writable by php-fpm workers
+chown -R www-data:www-data var
+chmod -R ug+rwX var
+
 exec php-fpm

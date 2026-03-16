@@ -16,7 +16,7 @@ RUN composer install --prefer-dist --no-autoloader --no-scripts --no-dev
 COPY . .
 
 RUN mkdir -p var config/jwt \
-    && composer dump-autoload --optimize --classmap-authoritative \
+    && composer dump-autoload --optimize --no-dev --classmap-authoritative \
     && chown -R www-data:www-data var config/jwt \
     && chmod -R 755 /var/www \
     && chmod +x /var/www/symfony/docker/php-entrypoint.sh

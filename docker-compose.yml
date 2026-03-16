@@ -23,7 +23,7 @@ services:
       dockerfile: nginx/ssl/Dockerfile
     depends_on:
       - php
-    ports:
+    expose:
       - "80"
     restart: unless-stopped
 
@@ -54,7 +54,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    ports:
+    expose:
       - "80"
     restart: unless-stopped
 

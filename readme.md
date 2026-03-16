@@ -111,10 +111,12 @@ code .
    - `MYSQL_PASSWORD`
    - `JWT_PASSPHRASE`
 3. Optionnel : active `RUN_MIGRATIONS=1` au premier déploiement pour lancer automatiquement les migrations.
-4. Expose le service `nginx` (port interne `80`) ; l'application est mappée par défaut sur `APP_PORT=8080` en local.
+4. Expose le service `nginx` (port interne `80`) via le reverse proxy Coolify (ne pas binder de port hôte en production).
 
 > Note : les clés JWT sont générées automatiquement au démarrage si elles n'existent pas.
 > SonarQube est temporairement désactivé dans `docker-compose.yml` et dans la CI.
+
+> En local (hors Coolify), utilise un override Compose si tu veux des ports hôte (ex: `8080:80`).
 
 ---
 
